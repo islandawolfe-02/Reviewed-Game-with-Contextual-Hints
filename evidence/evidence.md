@@ -15,8 +15,8 @@ the bundle (`p3.bundle`); if the history is re-authored on the Mac, update them 
 | Rejection, fallback, UI failure states, stale discard | `8f323b2`, `be0e94c` | headless run ([05](outputs/05-browser-run-headless-chromium.txt)); tests A2, A3, A4, A7 | validation: fallback east, East still moves (6 → 5). timeout: "Loading advice...", Hint disabled `true`, East accepted while waiting, then "State changed while waiting; request fresh advice."; Hint + Reset gives the same stale message. Server stopped: "Advice unavailable; keep playing.", East moves (6 → 5) | executed on work laptop (WSL, 2026-11-25, headless); executed on Mac (2026-11-26), Safari: unavailable, stale move/reset and timeout/validation fallback passed; loading confirmed by the owner; corrected winning display verified in [Safari](mac/p3-won-fixed.png) |
 | Own unit/integration checks (`node --test tests/*.test.mjs`) | `be0e94c` Add HTTP integration tests | `npx tsc -p tsconfig.json && node --test tests/*.test.mjs` | First run: 46 pass, **1 fail** (A2 assertion too broad, see below) ([03](outputs/03-all-tests-RED-broad-assertion.txt)). After the fix: tests 47, pass 47, fail 0 ([04](outputs/04-all-tests-GREEN.txt)). Fixtures F01–F11 all pass ([07](outputs/07-fixtures-F01-F11.txt)) | executed on work laptop (WSL, 2026-11-25) |
 | Seeded failure diagnosed (request ID → event) | `819b81f` | `python3 lab.py serve --candidate project/game --mode validation` / `--mode timeout` + one POST ([06](outputs/06-release-candidate-local-host.txt)); browser IDs in [05](outputs/05-browser-run-headless-chromium.txt) | See "Failure linked to its event" below | executed on work laptop (WSL, 2026-11-25); executed on Mac (2026-11-26), Safari: timeout `hint-8afaf086` and validation `hint-02aa9ac7` match their terminal events |
-| PR / local review decision | Reviewed head `69326ab64a13116293f1d141cb3aab4469b3d18f` | Read-only hosted patch and CI inspection; [19](outputs/19-hosted-pr-review.txt) | [PR #1](https://github.com/islandawolfe-02/Reviewed-Game-with-Contextual-Hints/pull/1): CI passed; technical review and assistance records prepared | recorded on Mac (2026-11-26); owner approval communicated on 2026-11-26; hosted decision comment and merge pending |
-| Release candidate in local host (URL, restart command) | `819b81f` | `python3 lab.py serve --candidate project/game --mode success` | `http://127.0.0.1:4310`, `/healthz` → `Healthy`, `/dist/presentation.js` → 200, hint `hint-dd788eeb` model-success ([06](outputs/06-release-candidate-local-host.txt)). Restart: Ctrl+C, then the same command (it recompiles) | executed on work laptop (WSL, 2026-11-25); Mac re-run pending |
+| PR / local review decision | Reviewed head `69326ab64a13116293f1d141cb3aab4469b3d18f` | Read-only hosted patch and CI inspection; [19](outputs/19-hosted-pr-review.txt) | [PR #1](https://github.com/islandawolfe-02/Reviewed-Game-with-Contextual-Hints/pull/1): CI passed; technical review and assistance records prepared | recorded on Mac (2026-11-26); owner approval communicated on 2026-11-26; PR #1 merged as `468a9083`; hosted decision comment not checked |
+| Release candidate in local host (URL, restart command) | `819b81f` | `python3 lab.py serve --candidate project/game --mode success` | `http://127.0.0.1:4310`, `/healthz` → `Healthy`, `/dist/presentation.js` → 200, hint `hint-dd788eeb` model-success ([06](outputs/06-release-candidate-local-host.txt)). Restart: Ctrl+C, then the same command (it recompiles) | executed on work laptop (WSL, 2026-11-25); executed on Mac (2026-11-26), Safari: release check passed at `468a9083`: success hint and validation fallback verified in Safari; winning route confirmed by owner (see post-merge check) |
 
 ## Mac visible-change check
 
@@ -27,7 +27,7 @@ Executed on Mac (2026-11-26), Safari, owner-captured screenshots inspected:
   Page request ID: `hint-f7d40a7c`; matching terminal event pending.
 - [Won](mac/p3-won.png): (2,2), won, moves 2, score 10, collected `["t1"]`.
   Allowed moves updates to "none (status: won)". The previous south hint and its why line from (2,1)
-  remain visible after the move in the original capture; the owner authorized a correction, recorded below. Owner approval was communicated on 2026-11-26; the hosted decision comment and merge are not yet recorded.
+  remain visible after the move in the original capture; the owner authorized a correction, recorded below. Owner approval was communicated on 2026-11-26; PR #1 merged as `468a9083`; the hosted decision comment has not been checked.
 
 These screenshots verify the near-goal and terminal displays. Intermediate-square screenshots and the
 Mac fallback explanation is now confirmed in [validation](mac/p3-validation.png). The later timeout
@@ -67,7 +67,34 @@ hint responses; expectations use the reference board facts.
 Executed on Mac (2026-11-26), Safari: [corrected won screenshot](mac/p3-won-fixed.png) inspected.
 It shows (2,2), won, moves 2, score 10, collected `["t1"]`, allowed moves none, and no previous advice
 or why line. Corrected winning display verified. Original screenshots remain evidence of the issue;
-the owner communicated approval on 2026-11-26. The hosted decision comment and merge remain pending.
+the owner communicated approval on 2026-11-26. PR #1 merged as `468a9083`; the hosted decision comment has not been checked.
+
+## Post-merge Mac release check
+
+Executed on Mac (2026-11-26), Safari, owner-captured screenshots inspected. Revision:
+`468a9083f1584ad848a988302fb55bd8df4bdd7b`, merge of PR #1 ([20](outputs/20-mac-release-revision.txt)).
+URL: `http://127.0.0.1:4310`. Restart: stop with Ctrl+C, then rerun the same serve command.
+
+- Success startup: [host transcript](outputs/21-mac-release-success-host.txt) confirms successful compilation
+  and startup in success mode. The [screenshot](mac/p3-release-success.png) shows (0,0), playing, moves 6,
+  score 0, collected `[]`, and allowed east, south. It contains no displayed hint, and this host transcript
+  contains no request event. This initial capture did not establish a success hint; the follow-up below completes that check.
+- Validation fallback: [screenshot](mac/p3-release-validation.png) shows fallback east and the permission /
+  deterministic fallback explanation, with unchanged initial complete state. Page ID `hint-57a19731`
+  matches the exact [terminal event](outputs/22-mac-release-validation-host.txt):
+  `{"requestId":"hint-57a19731","latencyMs":2.605542000001151,"outcome":"validation-failure","fallback":true}`.
+  Validation release check passed.
+
+- Success hint follow-up: [screenshot](mac/p3-release-success-hint.png) inspected. It shows suggested east,
+  its permission explanation and expanded initial state: (0,0), playing, moves 6, score 0, collected `[]`.
+  Page ID `hint-1093acd1` matches the exact [terminal event](outputs/23-mac-release-success-hint.txt):
+  `{"requestId":"hint-1093acd1","latencyMs":8.059625000001688,"outcome":"model-success","fallback":false}`.
+  Success hint release check passed.
+- Winning route: the owner reported "done and it won" after following East, East, South, South in the
+  same release check. This is the owner's reported result; no additional winning screenshot is claimed.
+
+Overall release check: passed, executed on Mac (2026-11-26), Safari, merged revision `468a9083`.
+This completes milestone 9; the separate individual demonstration remains pending.
 
 ## Bounded refactor
 
@@ -122,8 +149,14 @@ events, local evidence only, not Grafana. The same pair from the manual's serve 
 Evaluation judgments: the owner reviewed and agreed with all five entries in
 [evaluation-record.md](evaluation-record.md) on 2026-11-26 ("I agree").
 
+## Gameplay handover
+
+Provided by the owner on Mac (2026-11-26): [gameplay recording](mac/p3-gameplay.mov),
+78,648,015 bytes. File presence verified; the video contents have not been independently reviewed.
+The owner chose a gameplay recording and skipped the spoken demonstration. No spoken presentation or
+partner review is claimed. The written solo walkthrough remains in [ARCHITECTURE.md](../ARCHITECTURE.md#solo-walkthrough).
+
 Unfinished criteria (honest list):
-- Posting the owner's approval comment on the PR and merging; approval was communicated on 2026-11-26.
-- Post-merge release candidate re-run on Mac; supplied checks, all tests and fixtures have passed on Mac (see correction record).
-- Individual demonstration.
+- Hosted approval comment verification; approval was communicated on 2026-11-26 and PR #1 is merged.
+- Spoken demonstration skipped by owner; gameplay recording provided as handover evidence.
 - BP items (Yalla, BP PR, BP deployment): pending.
