@@ -45,6 +45,7 @@ function move(direction) {
   if (result.accepted) {
     state = result.state;
     stateVersion += 1;
+    if (!hintButton.disabled) showAdvice('');
   }
   render(result.accepted ? `Moved ${direction}.` : `Rejected (${result.reason}); state unchanged.`);
 }

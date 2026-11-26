@@ -1,0 +1,174 @@
+$ npm run test:all
+
+> w3-10-reference-game@1.0.0 test:all
+> tsc -p tsconfig.json && node --test tests/*.test.mjs
+
+✔ completed advice clears after accepted moves, including a win; rejected moves retain it (2.662875ms)
+✔ moving during a hint preserves loading until the stale response is discarded (0.514917ms)
+✔ H01 permitted east at the start is accepted from the model (1.732042ms)
+✔ H01 accepted explanation is returned without trimming (0.183708ms)
+✔ H01 extra response fields are omitted from the public hint (0.177917ms)
+✔ H01 an explanation of exactly 160 UTF-16 units is accepted (0.138333ms)
+✔ H02 west from the starting edge falls back to east (0.546959ms)
+✔ H02 north from the starting edge falls back to east (0.1435ms)
+✔ H02 south into the wall from (1,0) falls back to east (0.144083ms)
+✔ H02 east from (2,1) falls back to north (0.123875ms)
+✔ H03 malformed JSON text falls back (0.263667ms)
+✔ H03 parsed null falls back (0.194583ms)
+✔ H03 parsed array falls back (0.098292ms)
+✔ H03 a response without an action falls back (0.085458ms)
+✔ H03 an action whose type is not move falls back (0.083208ms)
+✔ H03 an unknown direction value falls back (0.06875ms)
+✔ H03 a whitespace-only explanation falls back (0.06325ms)
+✔ H03 an explanation of 161 UTF-16 units falls back (0.105791ms)
+✔ H04 an abort-aware hanging client times out to fallback (51.156667ms)
+✔ H04 a provider failure falls back (0.198417ms)
+✔ H04 an HTTP error status from the transport falls back (0.084958ms)
+✔ H05 a won game returns a null hint without calling the client (0.068666ms)
+✔ H05 a lost game returns a null hint without calling the client (0.047708ms)
+✔ H05 the no-action envelope is labelled fallback (0.061333ms)
+✔ H06 legal east with an irrelevant explanation passes the runtime gates (0.067792ms)
+✔ H06 the revised explanation passes the same runtime gates (0.055375ms)
+✖ A1 permitted response: success mode at the start offers east from the model (4.9795ms)
+✖ A1 near goal: success mode at (2,1) holding t1 offers south (the exit) (0.398958ms)
+✖ A2 valid-shaped illegal action: north at the start is replaced by the east fallback (0.20725ms)
+✖ A3 timeout: a hanging client falls back to east and the event says timeout, not validation-failure (0.227959ms)
+✖ A4 unavailable server: the client call rejects and the player can still move locally (0.23125ms)
+✖ A5 unchanged state after advice in every serve mode (0.177375ms)
+✖ A6 no permitted action: a won game gets a null hint, no client call, outcome no-action (0.160208ms)
+✖ A7 stale response: a move while waiting discards the old advice (0.185417ms)
+✔ normal: at the start, north and west leave the board, so east and south are allowed (1.617417ms)
+✔ normal: at (1,0) beside the wall, north is the edge and south is the wall (0.085833ms)
+✔ boundary: a won game has no allowed moves (0.053666ms)
+✔ boundary: a lost game on an open square still has no allowed moves (0.051834ms)
+✔ normal: model advice east at the start is shown with why it is permitted (0.390792ms)
+✔ normal: fallback north at (2,1) names the deterministic fallback rule (0.078084ms)
+✔ boundary: a null hint for a won game says nothing is permitted (0.059042ms)
+✔ boundary: a changed state version discards even valid advice (0.053667ms)
+✔ boundary: a direction outside the allowed moves is never called permitted (0.074083ms)
+✔ inputs are not mutated (0.189833ms)
+✔ signal: latency is finish minus start on the supplied clock (1.168791ms)
+✔ signal: a model-success event has exactly the four permitted fields (0.643042ms)
+✔ signal: a timeout emits once with outcome timeout and fallback true (31.042417ms)
+✔ signal: validation failure and provider failure are distinct causes behind the same fallback (0.354208ms)
+✔ signal: no-action completion emits exactly once without a client call (0.089542ms)
+ℹ tests 49
+ℹ suites 0
+ℹ pass 41
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 198.167708
+
+✖ failing tests:
+
+test at tests/hint-flow.test.mjs:43:1
+✖ A1 permitted response: success mode at the start offers east from the model (4.9795ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2368:21)
+      at listenInCluster (node:net:2499:12)
+      at node:net:2728:7
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at tests/hint-flow.test.mjs:57:1
+✖ A1 near goal: success mode at (2,1) holding t1 offers south (the exit) (0.398958ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2368:21)
+      at listenInCluster (node:net:2499:12)
+      at node:net:2728:7
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at tests/hint-flow.test.mjs:65:1
+✖ A2 valid-shaped illegal action: north at the start is replaced by the east fallback (0.20725ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2368:21)
+      at listenInCluster (node:net:2499:12)
+      at node:net:2728:7
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at tests/hint-flow.test.mjs:82:1
+✖ A3 timeout: a hanging client falls back to east and the event says timeout, not validation-failure (0.227959ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2368:21)
+      at listenInCluster (node:net:2499:12)
+      at node:net:2728:7
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at tests/hint-flow.test.mjs:91:1
+✖ A4 unavailable server: the client call rejects and the player can still move locally (0.23125ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2368:21)
+      at listenInCluster (node:net:2499:12)
+      at node:net:2728:7
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at tests/hint-flow.test.mjs:101:1
+✖ A5 unchanged state after advice in every serve mode (0.177375ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2368:21)
+      at listenInCluster (node:net:2499:12)
+      at node:net:2728:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21)
+      at runNextTicks (node:internal/process/task_queues:69:3)
+      at process.processImmediate (node:internal/timers:541:9) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at tests/hint-flow.test.mjs:110:1
+✖ A6 no permitted action: a won game gets a null hint, no client call, outcome no-action (0.160208ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2368:21)
+      at listenInCluster (node:net:2499:12)
+      at node:net:2728:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21)
+      at runNextTicks (node:internal/process/task_queues:69:3)
+      at process.processImmediate (node:internal/timers:541:9) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at tests/hint-flow.test.mjs:121:1
+✖ A7 stale response: a move while waiting discards the old advice (0.185417ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2368:21)
+      at listenInCluster (node:net:2499:12)
+      at node:net:2728:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21)
+      at runNextTicks (node:internal/process/task_queues:69:3)
+      at process.processImmediate (node:internal/timers:541:9) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }

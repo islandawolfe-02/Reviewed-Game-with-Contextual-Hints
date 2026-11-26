@@ -1,0 +1,7 @@
+python3 lab.py serve --candidate project/game --mode timeout
+$ tsc -p tsconfig.json   (in project/game)
+Hint host (mode: timeout) on http://127.0.0.1:4310  -  Ctrl+C stops it.
+All responses are deterministic local stubs; no model provider is contacted.
+{"requestId":"hint-7447901a","latencyMs":2006.7982499999998,"outcome":"timeout","fallback":true}
+{"requestId":"hint-7f573aff","latencyMs":2002.7817499999946,"outcome":"timeout","fallback":true}
+{"requestId":"hint-10ab9d2a","latencyMs":2004.457500000004,"outcome":"timeout","fallback":true}

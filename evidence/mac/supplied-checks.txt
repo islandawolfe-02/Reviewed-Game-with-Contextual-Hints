@@ -1,0 +1,41 @@
+python3 lab.py test --candidate project/game
+$ tsc -p tsconfig.json   (in project/game)
+$ node --test tests/evaluation.test.mjs tests/signals.test.mjs
+✔ H01 permitted east at the start is accepted from the model (2.307083ms)
+✔ H01 accepted explanation is returned without trimming (0.179792ms)
+✔ H01 extra response fields are omitted from the public hint (0.179708ms)
+✔ H01 an explanation of exactly 160 UTF-16 units is accepted (0.430708ms)
+✔ H02 west from the starting edge falls back to east (0.140209ms)
+✔ H02 north from the starting edge falls back to east (0.129667ms)
+✔ H02 south into the wall from (1,0) falls back to east (0.122334ms)
+✔ H02 east from (2,1) falls back to north (0.098084ms)
+✔ H03 malformed JSON text falls back (0.230209ms)
+✔ H03 parsed null falls back (0.170584ms)
+✔ H03 parsed array falls back (0.102792ms)
+✔ H03 a response without an action falls back (0.082167ms)
+✔ H03 an action whose type is not move falls back (0.076625ms)
+✔ H03 an unknown direction value falls back (0.06275ms)
+✔ H03 a whitespace-only explanation falls back (0.0595ms)
+✔ H03 an explanation of 161 UTF-16 units falls back (0.077625ms)
+✔ H04 an abort-aware hanging client times out to fallback (51.332708ms)
+✔ H04 a provider failure falls back (0.197667ms)
+✔ H04 an HTTP error status from the transport falls back (0.082542ms)
+✔ H05 a won game returns a null hint without calling the client (0.07425ms)
+✔ H05 a lost game returns a null hint without calling the client (0.04575ms)
+✔ H05 the no-action envelope is labelled fallback (0.062209ms)
+✔ H06 legal east with an irrelevant explanation passes the runtime gates (0.072292ms)
+✔ H06 the revised explanation passes the same runtime gates (0.060917ms)
+✔ signal: latency is finish minus start on the supplied clock (0.959708ms)
+✔ signal: a model-success event has exactly the four permitted fields (0.551292ms)
+✔ signal: a timeout emits once with outcome timeout and fallback true (32.598375ms)
+✔ signal: validation failure and provider failure are distinct causes behind the same fallback (0.369333ms)
+✔ signal: no-action completion emits exactly once without a client call (0.104709ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 177.988416
+PASS supplied adapter checks

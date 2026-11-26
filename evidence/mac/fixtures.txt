@@ -1,0 +1,18 @@
+
+> w3-10-reference-game@1.0.0 fixtures
+> tsc -p tsconfig.json && node scripts/verify-fixtures.mjs
+
+PASS F01  Start: initial state from the reference board
+PASS F02  East from the start is accepted and costs one move
+PASS F03  Moving into the wall is rejected and state is unchanged
+PASS F04  Moving off the board edge is rejected and state is unchanged
+PASS F05  Reaching the treasure scores ten and records it once
+PASS F06  Reaching the exit holding the treasure wins
+PASS F07  Final-move win: winning is checked before the zero-budget loss
+PASS F08  Spending the last move without winning loses
+PASS F09A  Actions after a win are rejected and state is unchanged
+PASS F09B  Actions after a loss are rejected and state is unchanged
+PASS F10A  An unknown direction is rejected as invalid
+PASS F10B  A missing direction is rejected as invalid
+PASS F11  Reaching the exit without the treasure does not win
+All fixtures pass
