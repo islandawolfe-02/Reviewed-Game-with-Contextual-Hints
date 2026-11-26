@@ -1,0 +1,209 @@
+{
+  "source": "Read-only GitHub API responses, selected fields",
+  "reviewedOn": "2026-11-26",
+  "pullRequest": {
+    "number": 1,
+    "url": "https://github.com/islandawolfe-02/Reviewed-Game-with-Contextual-Hints/pull/1",
+    "state": "open",
+    "head": "69326ab64a13116293f1d141cb3aab4469b3d18f",
+    "base": "9a33967e1585b6020bdc98d82d5c56b360af6be9",
+    "changedFiles": 46
+  },
+  "files": [
+    {
+      "filename": "ARCHITECTURE.md",
+      "status": "added"
+    },
+    {
+      "filename": "README.md",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/browser-checks.md",
+      "status": "modified"
+    },
+    {
+      "filename": "evidence/evaluation-record.md",
+      "status": "modified"
+    },
+    {
+      "filename": "evidence/evidence.md",
+      "status": "modified"
+    },
+    {
+      "filename": "evidence/mac/all-tests.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/mac/fixtures.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/mac/p3-full-before.png",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/mac/p3-hint-after.png",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/mac/p3-hint-before.png",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/mac/p3-near-goal.png",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/mac/p3-stale-move.png",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/mac/p3-stale-reset.png",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/mac/p3-timeout.png",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/mac/p3-unavailable-move.png",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/mac/p3-unavailable.png",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/mac/p3-validation.png",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/mac/p3-won-fixed.png",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/mac/p3-won.png",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/mac/serve-timeout.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/mac/serve-validation.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/mac/supplied-checks.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/outputs/02-refactor-presentation-tests.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/outputs/03-all-tests-RED-broad-assertion.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/outputs/04-all-tests-GREEN.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/outputs/05-browser-run-headless-chromium.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/outputs/06-release-candidate-local-host.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/outputs/07-fixtures-F01-F11.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/outputs/08-candidate-diff-vs-supplied-starter.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/outputs/09-mac-success-host.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/outputs/10-mac-timeout-host.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/outputs/11-mac-timeout-fallback.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/outputs/12-mac-validation-fallback.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/outputs/13-mac-browser-advice-RED.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/outputs/14-mac-browser-test-wording-RED.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/outputs/15-mac-supplied-after-advice-fix.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/outputs/16-mac-all-tests-after-advice-fix.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/outputs/17-mac-fixtures-after-advice-fix.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/outputs/18-mac-all-tests-after-advice-fix.txt",
+      "status": "added"
+    },
+    {
+      "filename": "evidence/review-record.md",
+      "status": "modified"
+    },
+    {
+      "filename": "project/game/browser/app.mjs",
+      "status": "modified"
+    },
+    {
+      "filename": "project/game/browser/index.html",
+      "status": "modified"
+    },
+    {
+      "filename": "project/game/src/presentation.ts",
+      "status": "added"
+    },
+    {
+      "filename": "project/game/tests/browser-app.test.mjs",
+      "status": "added"
+    },
+    {
+      "filename": "project/game/tests/hint-flow.test.mjs",
+      "status": "added"
+    },
+    {
+      "filename": "project/game/tests/presentation.test.mjs",
+      "status": "added"
+    }
+  ],
+  "checks": [
+    {
+      "id": 139983312243,
+      "name": "Supplied checks, own tests and local host smoke",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/islandawolfe-02/Reviewed-Game-with-Contextual-Hints/actions/runs/45841285784/job/139983312243",
+      "head_sha": "69326ab64a13116293f1d141cb3aab4469b3d18f",
+      "completed_at": "2026-11-26T14:40:09Z"
+    }
+  ]
+}

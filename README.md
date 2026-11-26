@@ -45,11 +45,12 @@ Modes: `success`, `validation` (well-shaped but illegal), `timeout` (2 s deadlin
 | Command (from `project/game` unless noted) | What it runs | Result (recorded) |
 |---|---|---|
 | `make test CANDIDATE=project/game` (repo root) | 29 supplied checks: H01–H06 + 5 signal checks | 29 pass |
-| `npx tsc -p tsconfig.json && node --test tests/*.test.mjs` | supplied checks + own unit and integration tests | 47 pass |
+| `npx tsc -p tsconfig.json && node --test tests/*.test.mjs` | supplied checks + own unit, HTTP integration and browser-handler tests | 49 pass (Mac, 2026-11-26) |
 | `npm run fixtures` | rule evaluator against F01–F11 | all pass |
 
 Own tests: `tests/presentation.test.mjs` (the refactored component, normal + boundary) and
-`tests/hint-flow.test.mjs` (browser client → real host → handler → validator → event → display, cases A1–A7).
+`tests/hint-flow.test.mjs` (browser client → real host → handler → validator → event → display, cases A1–A7),
+and `tests/browser-app.test.mjs` (advice clearing and pending-loading behavior in actual page handlers with a DOM substitute).
 Real outputs are in [`evidence/outputs/`](evidence/outputs/); the records are in [`evidence/`](evidence/).
 
 ## Repository workflow
@@ -60,12 +61,12 @@ a smoke run of the host in validation mode). CI never deploys.
 ## Status
 | Completion check | Status |
 |---|---|
-| Hint about the current state through the supplied server boundary | done (work laptop); Mac re-run pending |
+| Hint about the current state through the supplied server boundary | done; Mac Safari checks recorded (2026-11-26) |
 | One bounded refactor with interface and independent tests | done (`src/presentation.ts`) |
 | Advice never changes state; only player moves apply rules | done (tests A5, browser run) |
 | Invalid advice and failures give a deterministic legal fallback or null; unavailable server keeps play going | done |
-| Loading and stale-state behaviour in the browser | headless run done; by hand on Mac pending |
+| Loading and stale-state behaviour in the browser | done; Safari captures and owner loading confirmation recorded (Mac, 2026-11-26) |
 | Request ID linked to its event; timeout vs validation failure | done |
-| Tests and human usefulness judgements recorded separately | tests done; human judgements pending |
-| PR review record | pending (Mac) |
+| Tests and human usefulness judgements recorded separately | done; owner agreed with all five judgments (2026-11-26) |
+| PR review record | technical inspection complete; owner approval recorded; hosted comment/merge not yet recorded |
 | Final candidate in the local host, URL and restart command | done (work laptop); Mac re-run pending |

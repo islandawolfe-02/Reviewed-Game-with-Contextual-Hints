@@ -35,7 +35,7 @@ Mac near-goal and won screenshots, executed on Mac (2026-11-26), Safari:
   Allowed moves updates to "none (status: won)".
 - Observation for owner review: the won screenshot still displays the previous suggested south and
   "Permitted: south is an allowed move from (2,1) (north, south)." The advice refers to the previous square
-  after an accepted move. These captures predate the correction recorded below; the final owner review decision remains pending.
+  after an accepted move. These captures predate the correction recorded below; owner approval was communicated on 2026-11-26; the hosted decision comment and merge are not yet recorded.
 
 Optional automation: an example Playwright 1.61.0 spec is provided to facilitators; it is not required.
 

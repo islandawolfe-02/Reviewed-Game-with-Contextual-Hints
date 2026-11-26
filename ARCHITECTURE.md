@@ -47,7 +47,36 @@ flowchart LR
    `src/presentation.ts` returns the advice line and the why line, or the stale message if the version changed.
    `finally` re-enables Hint. On a network error, `catch` shows "Advice unavailable; keep playing."
 
-Nothing on this path calls `evaluate` or assigns `state`. Only `move()` and `reset()` in `app.mjs` do.
+The hint flow never assigns live browser `state`; only `move()` and `reset()` in `app.mjs` do.
+`allowedActions()` uses pure rule evaluation to inspect possible moves without applying one to live state.
+
+After an accepted move, completed advice and its why line are cleared. While a hint is pending,
+loading stays visible until the response is discarded as stale. Rejected moves retain the existing advice.
+
+## Solo walkthrough
+
+Written explanation completed on 2026-11-26 for the solo submission. This records the code path;
+no partner review or owner-performed spoken demonstration is claimed.
+
+1. **After clicking Hint:** `onHint()` saves the current version and a copy of the game state, disables
+   Hint and displays "Loading advice...". `askForHint()` posts that copy to the same-origin `/api/hint`.
+   The supplied host assigns a request ID and passes the request to the handler. The returned envelope
+   goes to `adviceView()`, which supplies the advice and why text. Hint is re-enabled in `finally`.
+2. **Legality and fallback:** `allowedActions(board, state)` in `rules.ts` is the source of permitted
+   actions. The handler passes that list to the adapter and checks the proposed hint with `validHint()`.
+   An invalid response, timeout or provider failure uses `fallbackHint()`: the first allowed move in
+   north, east, south, west order. A completed game has no allowed actions, so it returns a null hint
+   without calling the client. Presentation reads the same allowed-action list to explain permission.
+3. **Why a hint cannot move the player:** the request uses a copied snapshot, the handler returns advice,
+   and presentation returns strings. `onHint()` displays those strings and never assigns the live game
+   state or invokes the move handler. State changes occur in `move()` and `reset()`. Both increment
+   `stateVersion`, so a response for an earlier version is replaced by the stale message. If the host
+   is unreachable, the page shows "Advice unavailable; keep playing." and local moves still work.
+
+For example, at (0,0), east and south are allowed. A success hint offers east while the player stays at
+(0,0) with six moves, score zero and no collected treasure. After an actual East move, the live state
+becomes (1,0) with five moves, and the displayed allowed moves become east and west. The Mac screenshots
+and timeout/validation event matches are linked in [browser-checks.md](evidence/browser-checks.md).
 
 ## The refactored boundary (P3)
 
@@ -72,7 +101,7 @@ The host serves only `dist/rules.js` and `dist/presentation.js` to the browser, 
 | Presentation boundary | `project/game/src/presentation.ts` | Owned (new) |
 | Browser flow | `project/game/browser/app.mjs`, `index.html` | Supplied, changed (see `evidence/evidence.md`) |
 | Browser client, styles | `project/game/browser/client.mjs`, `styles.css` | Supplied, unchanged |
-| Own tests | `project/game/tests/presentation.test.mjs`, `hint-flow.test.mjs` | Owned (new) |
+| Own tests | `project/game/tests/presentation.test.mjs`, `hint-flow.test.mjs`, `browser-app.test.mjs` | Owned (new) |
 | Rules, adapter, validator, stubs, instrumentation, host | `project/game/src/*.ts` except `presentation.ts` | Supplied, unchanged |
 | Fixed checks | `project/game/tests/evaluation.test.mjs` (24), `signals.test.mjs` (5) | Supplied, unchanged |
 | Fixtures + runner | `project/game/fixtures/`, `scripts/verify-fixtures.mjs` | Supplied, unchanged |
