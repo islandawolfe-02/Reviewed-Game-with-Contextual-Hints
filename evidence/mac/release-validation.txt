@@ -1,0 +1,5 @@
+python3 lab.py serve --candidate project/game --mode validation
+$ tsc -p tsconfig.json   (in project/game)
+Hint host (mode: validation) on http://127.0.0.1:4310  -  Ctrl+C stops it.
+All responses are deterministic local stubs; no model provider is contacted.
+{"requestId":"hint-57a19731","latencyMs":2.605542000001151,"outcome":"validation-failure","fallback":true}

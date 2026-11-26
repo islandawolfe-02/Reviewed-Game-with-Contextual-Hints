@@ -68,5 +68,5 @@ a smoke run of the host in validation mode). CI never deploys.
 | Loading and stale-state behaviour in the browser | done; Safari captures and owner loading confirmation recorded (Mac, 2026-11-26) |
 | Request ID linked to its event; timeout vs validation failure | done |
 | Tests and human usefulness judgements recorded separately | done; owner agreed with all five judgments (2026-11-26) |
-| PR review record | technical inspection complete; owner approval recorded; hosted comment/merge not yet recorded |
-| Final candidate in the local host, URL and restart command | done (work laptop); Mac re-run pending |
+| PR review record | owner approval recorded; PR #1 merged |
+| Final candidate in the local host, URL and restart command | done (Mac, 2026-11-26): merged release success and validation verified; owner confirmed win |
