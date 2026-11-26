@@ -1,0 +1,130 @@
+# executed on work laptop (WSL Ubuntu-26.04), 2026-11-25 09:34 UTC, node v22.22.1, Python 3.14.4
+$ node /mnt/c/Users/2173lq/p3-tools/browser-check.mjs
+
+## MODE=success  (http://127.0.0.1:4311, Chromium 149.0.7827.55 headless)
+server: Hint host (mode: success) on http://127.0.0.1:4311  -  Ctrl+C stops it.
+[page loaded]
+  status : Status: playing | moves remaining: 6 | score: 0
+  allowed: Allowed moves from (0,0): east, south.
+  advice : 
+  why    : 
+  message: Collect t1 and reach the exit before the move budget runs out.
+[after Hint]
+  status : Status: playing | moves remaining: 6 | score: 0
+  allowed: Allowed moves from (0,0): east, south.
+  advice : Suggested: east - Explore the open eastern square. (source: model, request ID: hint-ffbe758e)
+  why    : Permitted: east is an allowed move from (0,0) (east, south).
+  message: Collect t1 and reach the exit before the move budget runs out.
+  state unchanged after Hint: true
+  event: {"requestId":"hint-ffbe758e","latencyMs":1.039476000000036,"outcome":"model-success","fallback":false}
+[after East]
+  status : Status: playing | moves remaining: 5 | score: 0
+  allowed: Allowed moves from (1,0): east, west.
+  advice : Suggested: east - Explore the open eastern square. (source: model, request ID: hint-ffbe758e)
+  why    : Permitted: east is an allowed move from (0,0) (east, south).
+  message: Moved east.
+[Hint at (1,0) beside the wall]
+  status : Status: playing | moves remaining: 5 | score: 0
+  allowed: Allowed moves from (1,0): east, west.
+  advice : Suggested: east - Explore the open eastern square. (source: model, request ID: hint-31002d0c)
+  why    : Permitted: east is an allowed move from (1,0) (east, west).
+  message: Moved east.
+  event: {"requestId":"hint-31002d0c","latencyMs":0.16553099999987353,"outcome":"model-success","fallback":false}
+[Hint at (2,1) holding t1 (near goal)]
+  status : Status: playing | moves remaining: 3 | score: 10
+  allowed: Allowed moves from (2,1): north, south.
+  advice : Suggested: south - Explore the open southern square. (source: model, request ID: hint-144395d0)
+  why    : Permitted: south is an allowed move from (2,1) (north, south).
+  message: Moved south.
+  event: {"requestId":"hint-144395d0","latencyMs":1.7642990000001646,"outcome":"model-success","fallback":false}
+[Hint after winning at (2,2)]
+  status : Status: won | moves remaining: 2 | score: 10
+  allowed: Allowed moves from (2,2): none (status: won).
+  advice : No permitted action. (source: fallback, request ID: hint-ef35bef5)
+  why    : Nothing to suggest: Allowed moves from (2,2): none (status: won).
+  message: Moved south.
+  event: {"requestId":"hint-ef35bef5","latencyMs":0.09586500000000342,"outcome":"no-action","fallback":true}
+page errors: none
+
+## MODE=validation  (http://127.0.0.1:4311, Chromium 149.0.7827.55 headless)
+server: Hint host (mode: validation) on http://127.0.0.1:4311  -  Ctrl+C stops it.
+[Hint at (0,0)]
+  status : Status: playing | moves remaining: 6 | score: 0
+  allowed: Allowed moves from (0,0): east, south.
+  advice : Suggested: east - A permitted next move. (source: fallback, request ID: hint-243204dd)
+  why    : Permitted: east is an allowed move from (0,0) (east, south). Fallback rule: the first allowed move in north, east, south, west order.
+  message: Collect t1 and reach the exit before the move budget runs out.
+  event: {"requestId":"hint-243204dd","latencyMs":0.6730530000000385,"outcome":"validation-failure","fallback":true}
+[East after rejected advice (still playable)]
+  status : Status: playing | moves remaining: 5 | score: 0
+  allowed: Allowed moves from (1,0): east, west.
+  advice : Suggested: east - A permitted next move. (source: fallback, request ID: hint-243204dd)
+  why    : Permitted: east is an allowed move from (0,0) (east, south). Fallback rule: the first allowed move in north, east, south, west order.
+  message: Moved east.
+page errors: none
+
+## MODE=timeout  (http://127.0.0.1:4311, Chromium 149.0.7827.55 headless)
+server: Hint host (mode: timeout) on http://127.0.0.1:4311  -  Ctrl+C stops it.
+[immediately after Hint]
+  status : Status: playing | moves remaining: 6 | score: 0
+  allowed: Allowed moves from (0,0): east, south.
+  advice : Loading advice...
+  why    : 
+  message: Collect t1 and reach the exit before the move budget runs out.
+  hint button disabled while waiting: true
+[East pressed while waiting]
+  status : Status: playing | moves remaining: 5 | score: 0
+  allowed: Allowed moves from (1,0): east, west.
+  advice : Loading advice...
+  why    : 
+  message: Moved east.
+[after the old answer returned]
+  status : Status: playing | moves remaining: 5 | score: 0
+  allowed: Allowed moves from (1,0): east, west.
+  advice : State changed while waiting; request fresh advice.
+  why    : 
+  message: Moved east.
+  events so far: {"requestId":"hint-b5eaa988","latencyMs":2005.746136,"outcome":"timeout","fallback":true}
+[Hint, then Reset before it returned]
+  status : Status: playing | moves remaining: 6 | score: 0
+  allowed: Allowed moves from (0,0): east, south.
+  advice : State changed while waiting; request fresh advice.
+  why    : 
+  message: New game.
+[Hint left to finish (2055 ms in the page)]
+  status : Status: playing | moves remaining: 6 | score: 0
+  allowed: Allowed moves from (0,0): east, south.
+  advice : Suggested: east - A permitted next move. (source: fallback, request ID: hint-212b15c6)
+  why    : Permitted: east is an allowed move from (0,0) (east, south). Fallback rule: the first allowed move in north, east, south, west order.
+  message: New game.
+  event: {"requestId":"hint-212b15c6","latencyMs":2001.1672019999996,"outcome":"timeout","fallback":true}
+page errors: none
+
+## MODE=irrelevant  (http://127.0.0.1:4311, Chromium 149.0.7827.55 headless)
+server: Hint host (mode: irrelevant) on http://127.0.0.1:4311  -  Ctrl+C stops it.
+[Hint at (0,0)]
+  status : Status: playing | moves remaining: 6 | score: 0
+  allowed: Allowed moves from (0,0): east, south.
+  advice : Suggested: east - Bananas are yellow. (source: model, request ID: hint-97c8bb85)
+  why    : Permitted: east is an allowed move from (0,0) (east, south).
+  message: Collect t1 and reach the exit before the move budget runs out.
+  event: {"requestId":"hint-97c8bb85","latencyMs":0.6916699999999878,"outcome":"model-success","fallback":false}
+page errors: none
+
+## MODE=success  (http://127.0.0.1:4311, Chromium 149.0.7827.55 headless)
+server: Hint host (mode: success) on http://127.0.0.1:4311  -  Ctrl+C stops it.
+server stopped after the page loaded
+[Hint with the server stopped]
+  status : Status: playing | moves remaining: 6 | score: 0
+  allowed: Allowed moves from (0,0): east, south.
+  advice : Advice unavailable; keep playing.
+  why    : 
+  message: Collect t1 and reach the exit before the move budget runs out.
+[East with the server stopped]
+  status : Status: playing | moves remaining: 5 | score: 0
+  allowed: Allowed moves from (1,0): east, west.
+  advice : Advice unavailable; keep playing.
+  why    : 
+  message: Moved east.
+page errors: Failed to load resource: net::ERR_CONNECTION_REFUSED
+# exit code: 0

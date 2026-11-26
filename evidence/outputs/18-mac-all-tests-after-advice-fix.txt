@@ -1,0 +1,61 @@
+
+> w3-10-reference-game@1.0.0 test:all
+> tsc -p tsconfig.json && node --test tests/*.test.mjs
+
+✔ completed advice clears after accepted moves, including a win; rejected moves retain it (2.070208ms)
+✔ moving during a hint preserves loading until the stale response is discarded (0.435792ms)
+✔ H01 permitted east at the start is accepted from the model (1.800583ms)
+✔ H01 accepted explanation is returned without trimming (0.192208ms)
+✔ H01 extra response fields are omitted from the public hint (0.183542ms)
+✔ H01 an explanation of exactly 160 UTF-16 units is accepted (0.1525ms)
+✔ H02 west from the starting edge falls back to east (0.662125ms)
+✔ H02 north from the starting edge falls back to east (0.12575ms)
+✔ H02 south into the wall from (1,0) falls back to east (0.131083ms)
+✔ H02 east from (2,1) falls back to north (0.104125ms)
+✔ H03 malformed JSON text falls back (0.276792ms)
+✔ H03 parsed null falls back (0.178583ms)
+✔ H03 parsed array falls back (0.115042ms)
+✔ H03 a response without an action falls back (0.087459ms)
+✔ H03 an action whose type is not move falls back (0.092417ms)
+✔ H03 an unknown direction value falls back (0.066375ms)
+✔ H03 a whitespace-only explanation falls back (0.064458ms)
+✔ H03 an explanation of 161 UTF-16 units falls back (0.066459ms)
+✔ H04 an abort-aware hanging client times out to fallback (51.195542ms)
+✔ H04 a provider failure falls back (0.203625ms)
+✔ H04 an HTTP error status from the transport falls back (0.088541ms)
+✔ H05 a won game returns a null hint without calling the client (0.068208ms)
+✔ H05 a lost game returns a null hint without calling the client (0.046833ms)
+✔ H05 the no-action envelope is labelled fallback (0.058667ms)
+✔ H06 legal east with an irrelevant explanation passes the runtime gates (0.065833ms)
+✔ H06 the revised explanation passes the same runtime gates (0.056167ms)
+✔ A1 permitted response: success mode at the start offers east from the model (22.857667ms)
+✔ A1 near goal: success mode at (2,1) holding t1 offers south (the exit) (3.998833ms)
+✔ A2 valid-shaped illegal action: north at the start is replaced by the east fallback (2.380833ms)
+✔ A3 timeout: a hanging client falls back to east and the event says timeout, not validation-failure (53.043834ms)
+✔ A4 unavailable server: the client call rejects and the player can still move locally (1.831209ms)
+✔ A5 unchanged state after advice in every serve mode (6.639625ms)
+✔ A6 no permitted action: a won game gets a null hint, no client call, outcome no-action (1.40925ms)
+✔ A7 stale response: a move while waiting discards the old advice (52.450291ms)
+✔ normal: at the start, north and west leave the board, so east and south are allowed (1.017167ms)
+✔ normal: at (1,0) beside the wall, north is the edge and south is the wall (0.083667ms)
+✔ boundary: a won game has no allowed moves (0.053917ms)
+✔ boundary: a lost game on an open square still has no allowed moves (0.051709ms)
+✔ normal: model advice east at the start is shown with why it is permitted (0.389292ms)
+✔ normal: fallback north at (2,1) names the deterministic fallback rule (0.078875ms)
+✔ boundary: a null hint for a won game says nothing is permitted (0.058334ms)
+✔ boundary: a changed state version discards even valid advice (0.05725ms)
+✔ boundary: a direction outside the allowed moves is never called permitted (0.091375ms)
+✔ inputs are not mutated (0.188792ms)
+✔ signal: latency is finish minus start on the supplied clock (0.909625ms)
+✔ signal: a model-success event has exactly the four permitted fields (0.458208ms)
+✔ signal: a timeout emits once with outcome timeout and fallback true (31.419625ms)
+✔ signal: validation failure and provider failure are distinct causes behind the same fallback (0.371875ms)
+✔ signal: no-action completion emits exactly once without a client call (0.101459ms)
+ℹ tests 49
+ℹ suites 0
+ℹ pass 49
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 294.123917

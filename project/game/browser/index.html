@@ -12,6 +12,7 @@
     <p>P = player, T = treasure t1, # = wall, E = exit. Collect t1, then reach the exit.</p>
     <table id="board" aria-label="Board"></table>
     <p id="status" role="status"></p>
+    <p id="allowed"></p>
     <div class="moves">
       <button data-move="north">North</button>
       <button data-move="east">East</button>
@@ -23,6 +24,7 @@
     <!-- LAB-CONTROLS -->
     <p><button id="hint">Hint</button></p>
     <p id="advice" aria-live="polite"></p>
+    <p id="why" aria-live="polite"></p>
     <details><summary>Complete state</summary><pre id="state"></pre></details>
   </main>
   <script type="module" src="/browser/app.mjs"></script>

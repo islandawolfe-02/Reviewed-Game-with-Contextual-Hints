@@ -1,0 +1,7 @@
+make serve CANDIDATE=project/game MODE=success
+python3 lab.py serve --candidate project/game --mode success
+$ tsc -p tsconfig.json   (in project/game)
+Hint host (mode: success) on http://127.0.0.1:4310  -  Ctrl+C stops it.
+All responses are deterministic local stubs; no model provider is contacted.
+{"requestId":"hint-b78ae406","latencyMs":7.419709000001603,"outcome":"model-success","fallback":false}
+{"requestId":"hint-64c29fa3","latencyMs":3.924957999988692,"outcome":"model-success","fallback":false}
