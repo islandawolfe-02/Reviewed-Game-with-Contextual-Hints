@@ -1,0 +1,191 @@
+# executed on work laptop (WSL Ubuntu-26.04), 2026-11-25 09:24 UTC, node v22.22.1, Python 3.14.4
+$ make test CANDIDATE=project/game
+python3 lab.py test --candidate project/game
+$ tsc -p tsconfig.json   (in project/game)
+$ node --test tests/evaluation.test.mjs tests/signals.test.mjs
+TAP version 13
+# Subtest: H01 permitted east at the start is accepted from the model
+ok 1 - H01 permitted east at the start is accepted from the model
+  ---
+  duration_ms: 5.101766
+  type: 'test'
+  ...
+# Subtest: H01 accepted explanation is returned without trimming
+ok 2 - H01 accepted explanation is returned without trimming
+  ---
+  duration_ms: 0.347347
+  type: 'test'
+  ...
+# Subtest: H01 extra response fields are omitted from the public hint
+ok 3 - H01 extra response fields are omitted from the public hint
+  ---
+  duration_ms: 0.31062
+  type: 'test'
+  ...
+# Subtest: H01 an explanation of exactly 160 UTF-16 units is accepted
+ok 4 - H01 an explanation of exactly 160 UTF-16 units is accepted
+  ---
+  duration_ms: 0.223487
+  type: 'test'
+  ...
+# Subtest: H02 west from the starting edge falls back to east
+ok 5 - H02 west from the starting edge falls back to east
+  ---
+  duration_ms: 0.30276
+  type: 'test'
+  ...
+# Subtest: H02 north from the starting edge falls back to east
+ok 6 - H02 north from the starting edge falls back to east
+  ---
+  duration_ms: 0.282279
+  type: 'test'
+  ...
+# Subtest: H02 south into the wall from (1,0) falls back to east
+ok 7 - H02 south into the wall from (1,0) falls back to east
+  ---
+  duration_ms: 0.347397
+  type: 'test'
+  ...
+# Subtest: H02 east from (2,1) falls back to north
+ok 8 - H02 east from (2,1) falls back to north
+  ---
+  duration_ms: 0.195499
+  type: 'test'
+  ...
+# Subtest: H03 malformed JSON text falls back
+ok 9 - H03 malformed JSON text falls back
+  ---
+  duration_ms: 0.755505
+  type: 'test'
+  ...
+# Subtest: H03 parsed null falls back
+ok 10 - H03 parsed null falls back
+  ---
+  duration_ms: 0.433505
+  type: 'test'
+  ...
+# Subtest: H03 parsed array falls back
+ok 11 - H03 parsed array falls back
+  ---
+  duration_ms: 0.236851
+  type: 'test'
+  ...
+# Subtest: H03 a response without an action falls back
+ok 12 - H03 a response without an action falls back
+  ---
+  duration_ms: 0.141456
+  type: 'test'
+  ...
+# Subtest: H03 an action whose type is not move falls back
+ok 13 - H03 an action whose type is not move falls back
+  ---
+  duration_ms: 0.121949
+  type: 'test'
+  ...
+# Subtest: H03 an unknown direction value falls back
+ok 14 - H03 an unknown direction value falls back
+  ---
+  duration_ms: 0.108557
+  type: 'test'
+  ...
+# Subtest: H03 a whitespace-only explanation falls back
+ok 15 - H03 a whitespace-only explanation falls back
+  ---
+  duration_ms: 0.10036
+  type: 'test'
+  ...
+# Subtest: H03 an explanation of 161 UTF-16 units falls back
+ok 16 - H03 an explanation of 161 UTF-16 units falls back
+  ---
+  duration_ms: 0.930256
+  type: 'test'
+  ...
+# Subtest: H04 an abort-aware hanging client times out to fallback
+ok 17 - H04 an abort-aware hanging client times out to fallback
+  ---
+  duration_ms: 51.443026
+  type: 'test'
+  ...
+# Subtest: H04 a provider failure falls back
+ok 18 - H04 a provider failure falls back
+  ---
+  duration_ms: 0.333106
+  type: 'test'
+  ...
+# Subtest: H04 an HTTP error status from the transport falls back
+ok 19 - H04 an HTTP error status from the transport falls back
+  ---
+  duration_ms: 0.136215
+  type: 'test'
+  ...
+# Subtest: H05 a won game returns a null hint without calling the client
+ok 20 - H05 a won game returns a null hint without calling the client
+  ---
+  duration_ms: 0.239589
+  type: 'test'
+  ...
+# Subtest: H05 a lost game returns a null hint without calling the client
+ok 21 - H05 a lost game returns a null hint without calling the client
+  ---
+  duration_ms: 0.129212
+  type: 'test'
+  ...
+# Subtest: H05 the no-action envelope is labelled fallback
+ok 22 - H05 the no-action envelope is labelled fallback
+  ---
+  duration_ms: 0.097261
+  type: 'test'
+  ...
+# Subtest: H06 legal east with an irrelevant explanation passes the runtime gates
+ok 23 - H06 legal east with an irrelevant explanation passes the runtime gates
+  ---
+  duration_ms: 0.153188
+  type: 'test'
+  ...
+# Subtest: H06 the revised explanation passes the same runtime gates
+ok 24 - H06 the revised explanation passes the same runtime gates
+  ---
+  duration_ms: 0.170127
+  type: 'test'
+  ...
+# Subtest: signal: latency is finish minus start on the supplied clock
+ok 25 - signal: latency is finish minus start on the supplied clock
+  ---
+  duration_ms: 13.023245
+  type: 'test'
+  ...
+# Subtest: signal: a model-success event has exactly the four permitted fields
+ok 26 - signal: a model-success event has exactly the four permitted fields
+  ---
+  duration_ms: 1.399429
+  type: 'test'
+  ...
+# Subtest: signal: a timeout emits once with outcome timeout and fallback true
+ok 27 - signal: a timeout emits once with outcome timeout and fallback true
+  ---
+  duration_ms: 32.459994
+  type: 'test'
+  ...
+# Subtest: signal: validation failure and provider failure are distinct causes behind the same fallback
+ok 28 - signal: validation failure and provider failure are distinct causes behind the same fallback
+  ---
+  duration_ms: 0.623057
+  type: 'test'
+  ...
+# Subtest: signal: no-action completion emits exactly once without a client call
+ok 29 - signal: no-action completion emits exactly once without a client call
+  ---
+  duration_ms: 0.13898
+  type: 'test'
+  ...
+1..29
+# tests 29
+# suites 0
+# pass 29
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 804.029592
+PASS supplied adapter checks
+# exit code: 0

@@ -1,0 +1,57 @@
+# P3 gates: the manual's section 5 test commands plus a smoke run of the supplied local host.
+# CI never deploys. What it builds is a CI copy; the candidate you record is the one you serve on the Mac.
+name: p3-gates
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash   # adds -o pipefail, so `| tee` cannot hide a failing check
+
+jobs:
+  gates:
+    name: Supplied checks, own tests and local host smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: project/game/package-lock.json
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+      - name: Install the pinned compiler
+        run: npm ci --no-audit --no-fund
+        working-directory: project/game
+      - name: Supplied adapter checks (29)
+        run: mkdir -p ci-evidence && python3 lab.py test --candidate project/game | tee ci-evidence/supplied-checks.txt
+      - name: All tests, including own tests
+        working-directory: project/game
+        run: npx tsc -p tsconfig.json && node --test tests/*.test.mjs | tee ../../ci-evidence/all-tests.txt
+      - name: Rule fixtures F01-F11
+        working-directory: project/game
+        run: npm run fixtures | tee ../../ci-evidence/fixtures.txt
+      - name: Local host smoke (validation mode, request ID links to its event)
+        working-directory: project/game
+        run: |
+          node dist/server.js --mode validation --port 4310 --events-file ../../ci-evidence/events.jsonl &
+          server=$!
+          for i in $(seq 20); do curl -sf http://127.0.0.1:4310/healthz && break; sleep 0.5; done
+          curl -sf http://127.0.0.1:4310/ | grep -q '<title>'
+          body='{"boardId":"reference","state":{"position":{"x":0,"y":0},"movesRemaining":6,"score":0,"collected":[],"status":"playing"},"stateVersion":0}'
+          envelope=$(curl -sf -H 'content-type: application/json' -d "$body" http://127.0.0.1:4310/api/hint)
+          echo "$envelope" | tee ../../ci-evidence/envelope.json
+          id=$(node -p "JSON.parse(process.argv[1]).requestId" "$envelope")
+          grep "\"requestId\":\"$id\"" ../../ci-evidence/events.jsonl | grep -q '"outcome":"validation-failure","fallback":true'
+          echo "$envelope" | grep -q '"direction":"east"'
+          kill "$server"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: p3-ci-evidence
+          path: ci-evidence/
