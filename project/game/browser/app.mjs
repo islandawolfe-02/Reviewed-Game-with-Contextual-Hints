@@ -1,5 +1,7 @@
-// Supplied browser hint flow. Moves are applied locally by the rule evaluator; advice is display data.
+// Browser hint flow (supplied; P3 adds the allowed-moves and why-permitted display from presentation.js).
+// Moves are applied locally by the rule evaluator; advice is display data.
 import { evaluate, initialState, REFERENCE_BOARD } from '/dist/rules.js';
+import { adviceView, allowedMovesText } from '/dist/presentation.js';
 import { askForHint } from './client.mjs';
 
 const board = REFERENCE_BOARD;
@@ -28,11 +30,13 @@ function render(message) {
   $('#board').innerHTML = rows.join('');
   $('#state').textContent = JSON.stringify(state);
   $('#status').textContent = `Status: ${state.status} | moves remaining: ${state.movesRemaining} | score: ${state.score}`;
+  $('#allowed').textContent = allowedMovesText(board, state);
   if (message !== undefined) $('#message').textContent = message;
 }
 
-function showAdvice(text) {
+function showAdvice(text, why = '') {
   $('#advice').textContent = text;
+  $('#why').textContent = why;
 }
 
 // Only the player's move action invokes the rule evaluator to update state.
@@ -66,15 +70,9 @@ async function onHint() {
   showAdvice('Loading advice...');
   try {
     const envelope = await askForHint({ boardId: board.id, state: snapshot, stateVersion: version, control: controls() });
-    if (version !== stateVersion) {
-      showAdvice('State changed while waiting; request fresh advice.');
-      return;
-    }
-    if (envelope.hint === null) {
-      showAdvice(`No permitted action. (source: ${envelope.source}, request ID: ${envelope.requestId})`);
-    } else {
-      showAdvice(`Suggested: ${envelope.hint.action.direction} - ${envelope.hint.explanation} (source: ${envelope.source}, request ID: ${envelope.requestId})`);
-    }
+    // Display only: a changed stateVersion makes adviceView return the stale message instead.
+    const view = adviceView(board, snapshot, envelope, version, stateVersion);
+    showAdvice(view.advice, view.why);
   } catch {
     showAdvice('Advice unavailable; keep playing.');
   } finally {
