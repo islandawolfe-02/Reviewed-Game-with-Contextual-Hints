@@ -1,0 +1,36 @@
+# executed on work laptop (WSL Ubuntu-26.04), 2026-11-25 09:38 UTC, node v22.22.1, Python 3.14.4
+$ bash /mnt/c/Users/2173lq/p3-tools/rc.sh
+
+## $ python3 lab.py serve --candidate project/game --mode success
+$ curl -s http://127.0.0.1:4310/healthz  ->  Healthy
+$ curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:4310/dist/presentation.js  ->  200
+$ curl -s -H 'content-type: application/json' -d '<S0>' http://127.0.0.1:4310/api/hint
+envelope (10 ms): {"hint":{"action":{"type":"move","direction":"east"},"explanation":"Explore the open eastern square."},"source":"model","requestId":"hint-dd788eeb"}
+terminal output:
+  $ tsc -p tsconfig.json   (in project/game)
+  Hint host (mode: success) on http://127.0.0.1:4310  -  Ctrl+C stops it.
+  All responses are deterministic local stubs; no model provider is contacted.
+  {"requestId":"hint-dd788eeb","latencyMs":0.8838380000000825,"outcome":"model-success","fallback":false}
+
+## $ python3 lab.py serve --candidate project/game --mode validation
+$ curl -s http://127.0.0.1:4310/healthz  ->  Healthy
+$ curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:4310/dist/presentation.js  ->  200
+$ curl -s -H 'content-type: application/json' -d '<S0>' http://127.0.0.1:4310/api/hint
+envelope (9 ms): {"hint":{"action":{"type":"move","direction":"east"},"explanation":"A permitted next move."},"source":"fallback","requestId":"hint-fe0c1bc8"}
+terminal output:
+  $ tsc -p tsconfig.json   (in project/game)
+  Hint host (mode: validation) on http://127.0.0.1:4310  -  Ctrl+C stops it.
+  All responses are deterministic local stubs; no model provider is contacted.
+  {"requestId":"hint-fe0c1bc8","latencyMs":0.6028170000000159,"outcome":"validation-failure","fallback":true}
+
+## $ python3 lab.py serve --candidate project/game --mode timeout
+$ curl -s http://127.0.0.1:4310/healthz  ->  Healthy
+$ curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:4310/dist/presentation.js  ->  200
+$ curl -s -H 'content-type: application/json' -d '<S0>' http://127.0.0.1:4310/api/hint
+envelope (2034 ms): {"hint":{"action":{"type":"move","direction":"east"},"explanation":"A permitted next move."},"source":"fallback","requestId":"hint-c43bea17"}
+terminal output:
+  $ tsc -p tsconfig.json   (in project/game)
+  Hint host (mode: timeout) on http://127.0.0.1:4310  -  Ctrl+C stops it.
+  All responses are deterministic local stubs; no model provider is contacted.
+  {"requestId":"hint-c43bea17","latencyMs":2007.971216,"outcome":"timeout","fallback":true}
+# exit code: 0

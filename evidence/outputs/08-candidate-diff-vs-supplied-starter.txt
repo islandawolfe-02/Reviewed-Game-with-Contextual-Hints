@@ -1,0 +1,76 @@
+# executed on work laptop (WSL Ubuntu-26.04), 2026-11-25 09:39 UTC, node v22.22.1, Python 3.14.4
+$ bash /mnt/c/Users/2173lq/p3-tools/g.sh diff --stat main p3-hints -- project/game && bash /mnt/c/Users/2173lq/p3-tools/g.sh diff main p3-hints -- project/game/browser
+ project/game/browser/app.mjs             |  20 +++--
+ project/game/browser/index.html          |   2 +
+ project/game/src/presentation.ts         |  43 ++++++++++
+ project/game/tests/hint-flow.test.mjs    | 135 +++++++++++++++++++++++++++++++
+ project/game/tests/presentation.test.mjs |  66 +++++++++++++++
+ 5 files changed, 255 insertions(+), 11 deletions(-)
+diff --git a/project/game/browser/app.mjs b/project/game/browser/app.mjs
+index bcbb3ae..ea83acf 100644
+--- a/project/game/browser/app.mjs
++++ b/project/game/browser/app.mjs
+@@ -1,5 +1,7 @@
+-// Supplied browser hint flow. Moves are applied locally by the rule evaluator; advice is display data.
++// Browser hint flow (supplied; P3 adds the allowed-moves and why-permitted display from presentation.js).
++// Moves are applied locally by the rule evaluator; advice is display data.
+ import { evaluate, initialState, REFERENCE_BOARD } from '/dist/rules.js';
++import { adviceView, allowedMovesText } from '/dist/presentation.js';
+ import { askForHint } from './client.mjs';
+ 
+ const board = REFERENCE_BOARD;
+@@ -28,11 +30,13 @@ function render(message) {
+   $('#board').innerHTML = rows.join('');
+   $('#state').textContent = JSON.stringify(state);
+   $('#status').textContent = `Status: ${state.status} | moves remaining: ${state.movesRemaining} | score: ${state.score}`;
++  $('#allowed').textContent = allowedMovesText(board, state);
+   if (message !== undefined) $('#message').textContent = message;
+ }
+ 
+-function showAdvice(text) {
++function showAdvice(text, why = '') {
+   $('#advice').textContent = text;
++  $('#why').textContent = why;
+ }
+ 
+ // Only the player's move action invokes the rule evaluator to update state.
+@@ -66,15 +70,9 @@ async function onHint() {
+   showAdvice('Loading advice...');
+   try {
+     const envelope = await askForHint({ boardId: board.id, state: snapshot, stateVersion: version, control: controls() });
+-    if (version !== stateVersion) {
+-      showAdvice('State changed while waiting; request fresh advice.');
+-      return;
+-    }
+-    if (envelope.hint === null) {
+-      showAdvice(`No permitted action. (source: ${envelope.source}, request ID: ${envelope.requestId})`);
+-    } else {
+-      showAdvice(`Suggested: ${envelope.hint.action.direction} - ${envelope.hint.explanation} (source: ${envelope.source}, request ID: ${envelope.requestId})`);
+-    }
++    // Display only: a changed stateVersion makes adviceView return the stale message instead.
++    const view = adviceView(board, snapshot, envelope, version, stateVersion);
++    showAdvice(view.advice, view.why);
+   } catch {
+     showAdvice('Advice unavailable; keep playing.');
+   } finally {
+diff --git a/project/game/browser/index.html b/project/game/browser/index.html
+index 9d12319..421dfcc 100644
+--- a/project/game/browser/index.html
++++ b/project/game/browser/index.html
+@@ -12,6 +12,7 @@
+     <p>P = player, T = treasure t1, # = wall, E = exit. Collect t1, then reach the exit.</p>
+     <table id="board" aria-label="Board"></table>
+     <p id="status" role="status"></p>
++    <p id="allowed"></p>
+     <div class="moves">
+       <button data-move="north">North</button>
+       <button data-move="east">East</button>
+@@ -23,6 +24,7 @@
+     <!-- LAB-CONTROLS -->
+     <p><button id="hint">Hint</button></p>
+     <p id="advice" aria-live="polite"></p>
++    <p id="why" aria-live="polite"></p>
+     <details><summary>Complete state</summary><pre id="state"></pre></details>
+   </main>
+   <script type="module" src="/browser/app.mjs"></script>
+# exit code: 0
