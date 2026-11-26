@@ -4,7 +4,7 @@ Work-laptop column: a scripted run in headless Chromium 149.0.7827.55 (Playwrigh
 2026-11-25, against `node dist/server.js --mode <mode> --port 4311`. Full transcript:
 [outputs/05](outputs/05-browser-run-headless-chromium.txt). The Mac column is a check by hand in a normal browser.
 
-| Check | Steps | Expected | Observed (date, browser): work laptop, headless | Observed by hand on Mac (date, browser) |
+| Check | Steps | Expected | Observed (date, browser): work laptop, headless | Observed on Mac (date, browser) |
 |---|---|---|---|---|
 | Loading | `MODE=timeout`; click Hint | "Loading advice..." and Hint disabled; move buttons still work | "Loading advice...", Hint disabled `true`; East accepted while waiting (moves 6 → 5) | pending |
 | Unavailable server | Load page, stop the server (Ctrl+C), click Hint, then East | "Advice unavailable; keep playing."; East still moves | "Advice unavailable; keep playing."; East → "Moved east.", moves 6 → 5, allowed moves now (1,0): east, west | pending |
